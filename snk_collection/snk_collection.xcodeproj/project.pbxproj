@@ -15,6 +15,9 @@
 		16C5EFD52C25C356004E72BB /* snk_collectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C5EFD42C25C356004E72BB /* snk_collectionTests.swift */; };
 		16C5EFDF2C25C356004E72BB /* snk_collectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C5EFDE2C25C356004E72BB /* snk_collectionUITests.swift */; };
 		16C5EFE12C25C356004E72BB /* snk_collectionUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C5EFE02C25C356004E72BB /* snk_collectionUITestsLaunchTests.swift */; };
+		16C5EFEF2C25E87C004E72BB /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C5EFEE2C25E87C004E72BB /* SplashView.swift */; };
+		16C5EFF22C25F15D004E72BB /* SnkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C5EFF12C25F15D004E72BB /* SnkModel.swift */; };
+		16C5EFF52C25FE6A004E72BB /* GridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C5EFF42C25FE6A004E72BB /* GridCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +49,9 @@
 		16C5EFDA2C25C356004E72BB /* snk_collectionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = snk_collectionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		16C5EFDE2C25C356004E72BB /* snk_collectionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = snk_collectionUITests.swift; sourceTree = "<group>"; };
 		16C5EFE02C25C356004E72BB /* snk_collectionUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = snk_collectionUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		16C5EFEE2C25E87C004E72BB /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		16C5EFF12C25F15D004E72BB /* SnkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnkModel.swift; sourceTree = "<group>"; };
+		16C5EFF42C25FE6A004E72BB /* GridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,9 +102,10 @@
 		16C5EFC02C25C353004E72BB /* snk_collection */ = {
 			isa = PBXGroup;
 			children = (
+				16C5EFF32C25FDC5004E72BB /* widgets */,
+				16C5EFF02C25F0D4004E72BB /* Models */,
 				16C5EFC12C25C353004E72BB /* snk_collectionApp.swift */,
-				16C5EFC32C25C353004E72BB /* ContentView.swift */,
-				16C5EFC52C25C353004E72BB /* Item.swift */,
+				16C5EFED2C25E692004E72BB /* views */,
 				16C5EFC72C25C355004E72BB /* Assets.xcassets */,
 				16C5EFC92C25C355004E72BB /* Preview Content */,
 			);
@@ -128,6 +135,32 @@
 				16C5EFE02C25C356004E72BB /* snk_collectionUITestsLaunchTests.swift */,
 			);
 			path = snk_collectionUITests;
+			sourceTree = "<group>";
+		};
+		16C5EFED2C25E692004E72BB /* views */ = {
+			isa = PBXGroup;
+			children = (
+				16C5EFC32C25C353004E72BB /* ContentView.swift */,
+				16C5EFC52C25C353004E72BB /* Item.swift */,
+				16C5EFEE2C25E87C004E72BB /* SplashView.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		16C5EFF02C25F0D4004E72BB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				16C5EFF12C25F15D004E72BB /* SnkModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		16C5EFF32C25FDC5004E72BB /* widgets */ = {
+			isa = PBXGroup;
+			children = (
+				16C5EFF42C25FE6A004E72BB /* GridCell.swift */,
+			);
+			path = widgets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,8 +294,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				16C5EFC42C25C353004E72BB /* ContentView.swift in Sources */,
+				16C5EFF22C25F15D004E72BB /* SnkModel.swift in Sources */,
+				16C5EFEF2C25E87C004E72BB /* SplashView.swift in Sources */,
 				16C5EFC62C25C353004E72BB /* Item.swift in Sources */,
 				16C5EFC22C25C353004E72BB /* snk_collectionApp.swift in Sources */,
+				16C5EFF52C25FE6A004E72BB /* GridCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
