@@ -15,12 +15,14 @@ import SwiftUI
     var size: Int
     var descriptionDetail: String
     var photo: Date?
+    var brand: String
     
-    init(model: String, price: Double, size: Int, descriptionDetail: String, photo: Date? = nil) {
+    init(model: String, price: Double, size: Int, descriptionDetail: String, photo: Date? = nil, brand: String) {
         self.model = model
         self.price = price
         self.size = size
         self.descriptionDetail = descriptionDetail
         self.photo = photo
+        self.brand = brand
     }
 }
