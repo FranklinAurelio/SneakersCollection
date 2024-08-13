@@ -10,10 +10,11 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var items: [Sneaker]
     init() {
         UITableView.appearance().backgroundColor = .red
     }
+    @State private var showingPopUp = false
 
     var body: some View {
        
@@ -22,7 +23,7 @@ struct ContentView: View {
                 ForEach(items) { item in
                     NavigationLink {
                        
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text("Item at \(item.model)")
                     } label: {
                         GridCell()
                             .background()
@@ -44,26 +45,29 @@ struct ContentView: View {
                     
                 }
                 ToolbarItem {
-                    Button(action: addItem) {
+                    Button(action: 
+                            
+                            addItem
+                    ) {
                         Label("Add Item", systemImage: "plus.app.fill")
                           
                     }
                 }
             }
+            .sheet(isPresented: $showingPopUp, content: {
+                ShowInputPopUp(showModal: self.$showingPopUp)
+            })
         } detail: {
             Text("Select an item")
         }
       
         .accentColor(.black)
-    
      
     }
+        
 
     private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
+        showingPopUp.toggle()
     }
 
     private func deleteItems(offsets: IndexSet) {
@@ -77,5 +81,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Sneaker.self, inMemory: true)
 }

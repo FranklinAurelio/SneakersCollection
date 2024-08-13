@@ -12,7 +12,7 @@ import SwiftData
 struct snk_collectionApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Sneaker.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -27,6 +27,7 @@ struct snk_collectionApp: App {
         WindowGroup {
             SplashView()
         }
+        
         .modelContainer(sharedModelContainer)
     }
 }
