@@ -7,6 +7,8 @@
 
 import SwiftUI
 import SwiftData
+import Foundation
+
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -22,10 +24,34 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                       
-                        Text("Item at \(item.model)")
+                        VStack{
+                            Spacer()
+                                .frame(height: 15)
+                            Image(.teste)
+                                .resizable( resizingMode: .stretch)
+                                .frame( height: 250)
+                                .padding(20)
+                                .clipShape(.rect(cornerRadius: 20))
+                            Spacer()
+                                .frame(height: 15)
+                            HStack{
+                                Text("Detalhes: ")
+                                    .fontWeight(.bold)
+                                Text(item.descriptionDetail)
+                            }
+                            Spacer()
+                                .frame(height: 15)
+                            HStack{
+                                Text("Tamanho: ")
+                                    .fontWeight(.bold)
+                                Text(String(item.size))
+                            }
+                            Spacer()
+                            
+                        }
+                        
                     } label: {
-                        GridCell()
+                        GridCell(itemPassed: item)
                             .background()
                             .previewLayout(.fixed(width: 400, height: 90))
                           

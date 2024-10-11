@@ -8,8 +8,12 @@
 import Foundation
 import SwiftUI
 
+
 struct GridCell: View {
-    
+    var itemPassed: Sneaker
+    init(itemPassed: Sneaker) {
+        self.itemPassed = itemPassed
+    }
    
     var body: some View {
         HStack(spacing: 10){
@@ -22,20 +26,20 @@ struct GridCell: View {
                 
             VStack(alignment: .leading, spacing: 10){
                 HStack(spacing: 10){
-                    Text("Jordan")
+                    Text(itemPassed.brand)
                         
                         .foregroundStyle(Color.black)
                         .font(.caption)
                     
                     Spacer()
-                    Text("R$\(String("1200"))"
+                    Text("R$\(String(itemPassed.price))"
                     )
                     .foregroundStyle(Color.red)
                     .font(.caption)
                     
                     
                 }
-                Text("Spyzik year of dragon")
+                Text(itemPassed.model)
                     .foregroundStyle(Color.black)
                     .font(.caption)
                 Divider()
