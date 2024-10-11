@@ -114,7 +114,7 @@ struct ShowInputPopUp: View {
             .textFieldStyle(.roundedBorder)
             .background(Color.white)
             Spacer()
-            PhotosPicker("Select an image", selection: $selectedItem, matching: .images)
+            PhotosPicker("Galeria", selection: $selectedItem, matching: .images)
                             .onChange(of: selectedItem) {
                                 Task {
                                     if let image = try? await selectedItem?.loadTransferable(type: Image.self) {
@@ -136,12 +136,8 @@ struct ShowInputPopUp: View {
                                .resizable()
                                .scaledToFit()
                        }
-                       else {
-                           Text("No Image Selected")
-                               .font(.headline)
-                       }
-                       
-                       Button("Open camera") {
+                      
+                       Button("Camera") {
                            self.showCamera.toggle()
                        }
                        .fullScreenCover(isPresented: self.$showCamera) {
@@ -151,28 +147,11 @@ struct ShowInputPopUp: View {
                    }
                     
             HStack{
-                Button(action: {
-                    Task{
-                        //await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand)
-                    }
-                }){
-                    HStack{
-                        Text("Add image")
-                        Image(systemName: "person.crop.square.badge.camera")
-                    }
-                    
-                }
-                .padding()
-                .background(Color.blue)
-                .clipShape(Capsule())
-                .foregroundStyle(Color.white)
                 
-                Spacer()
-                    .frame(width: 20)
                 
                 Button(action: {
                     Task{
-                        await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand)
+                        await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand, picture: image)
                     }
                 }){
                     HStack{
@@ -194,10 +173,10 @@ struct ShowInputPopUp: View {
         .background(Color.white)
     }
     
-    func addValue(model: String, price: Double, size: Int, descriptionDetail: String, brand: String)async{
+    func addValue(model: String, price: Double, size: Int, descriptionDetail: String, brand: String, picture:Date?)async{
             print("Value add")
             withAnimation {
-                let newItem = Sneaker(model: model, price: price, size: size, descriptionDetail: descriptionDetail, brand: brand)
+                let newItem = Sneaker(model: model, price: price, size: size, descriptionDetail: descriptionDetail, photo: picture, brand: brand)
                 modelContext.insert(newItem)
             }
             self.showModal.toggle()
