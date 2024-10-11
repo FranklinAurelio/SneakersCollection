@@ -9,9 +9,17 @@ import Foundation
 
 import SwiftUI
 import Combine
+import PhotosUI
 
 
 struct ShowInputPopUp: View {
+    @State private var selectedItem: PhotosPickerItem?
+    @State var image: Image?
+    
+    @State private var showCamera = false
+    @State private var selectedImage: UIImage?
+    @State var imageCamera: UIImage?
+    
     @Binding var showModal: Bool
     @State private var model: String = ""
     @FocusState private var modelFieldIsFocused: Bool
@@ -23,6 +31,9 @@ struct ShowInputPopUp: View {
     @FocusState private var detailFieldIsFocused: Bool
     @State private var brand: String = ""
     @FocusState private var brandFieldIsFocused: Bool
+    @State private var photo: Date? = nil
+    @FocusState private var photoFieldIsFocused: Bool
+    
     @Environment(\.modelContext) private var modelContext
     //let numberFormatter: NumberFormatter
     //let mask:Mask?
@@ -103,21 +114,79 @@ struct ShowInputPopUp: View {
             .textFieldStyle(.roundedBorder)
             .background(Color.white)
             Spacer()
-            Button(action: {
-                Task{
-                    await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand)
+            PhotosPicker("Select an image", selection: $selectedItem, matching: .images)
+                            .onChange(of: selectedItem) {
+                                Task {
+                                    if let image = try? await selectedItem?.loadTransferable(type: Image.self) {
+                                        self.image = image
+                                    }
+                                    print("Failed to load the image")
+                                }
+                            }
+                        
+                        if let image {
+                            image
+                                .resizable()
+                                .scaledToFit()
+                        }
+            
+            VStack {
+                       if let selectedImage{
+                           Image(uiImage: selectedImage)
+                               .resizable()
+                               .scaledToFit()
+                       }
+                       else {
+                           Text("No Image Selected")
+                               .font(.headline)
+                       }
+                       
+                       Button("Open camera") {
+                           self.showCamera.toggle()
+                       }
+                       .fullScreenCover(isPresented: self.$showCamera) {
+                           accessCameraView(selectedImage: self.$selectedImage)
+                               .background(.black)
+                       }
+                   }
+                    
+            HStack{
+                Button(action: {
+                    Task{
+                        //await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand)
+                    }
+                }){
+                    HStack{
+                        Text("Add image")
+                        Image(systemName: "person.crop.square.badge.camera")
+                    }
+                    
                 }
-            }){
-                HStack{
-                    Text("Adicionar")
-                    Image(systemName: "plus.circle")
-                }
+                .padding()
+                .background(Color.blue)
+                .clipShape(Capsule())
+                .foregroundStyle(Color.white)
                 
+                Spacer()
+                    .frame(width: 20)
+                
+                Button(action: {
+                    Task{
+                        await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand)
+                    }
+                }){
+                    HStack{
+                        Text("Adicionar")
+                        Image(systemName: "plus.circle")
+                    }
+                    
+                }
+                .padding()
+                .background(Color.black)
+                .clipShape(Capsule())
+                .foregroundStyle(Color.white)
             }
-            .padding()
-            .background(Color.black)
-            .clipShape(Capsule())
-            .foregroundStyle(Color.white)
+            
             //.shadow(color: Color(red: 0, green: 0.5, blue: 0.5), radius: 7)
         }
         .preferredColorScheme(.light)
