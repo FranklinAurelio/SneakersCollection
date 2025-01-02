@@ -17,12 +17,22 @@ struct GridCell: View {
    
     var body: some View {
         HStack(spacing: 10){
-            Image(.teste)
-                .resizable()
-                .frame(width: 100, height: 60)
-                
-                .clipShape(.rect(cornerRadius: 20))
-                //.overlay(RoundedRectangle(cornerRadius: 20).stroke(.black, lineWidth: 2))
+            if let image = itemPassed.photo {
+                Image(uiImage: UIImage(data: image) ?? .teste)
+                    .resizable()
+                    .frame(width: 100, height: 60)
+                    
+                    .clipShape(.rect(cornerRadius: 20))
+                    //.overlay(RoundedRectangle(cornerRadius: 20).stroke(.black, lineWidth: 2))
+            } else {
+                Image( .teste)
+                    .resizable()
+                    .frame(width: 100, height: 60)
+                    
+                    .clipShape(.rect(cornerRadius: 20))
+                    //.overlay(RoundedRectangle(cornerRadius: 20).stroke(.black, lineWidth: 2))
+            }
+            
                 
             VStack(alignment: .leading, spacing: 10){
                 HStack(spacing: 10){

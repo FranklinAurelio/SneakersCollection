@@ -15,10 +15,10 @@ import PhotosUI
 struct ShowInputPopUp: View {
     @State private var selectedItem: PhotosPickerItem?
     @State var image: Image?
+    @State var imageData: Data?
     
     @State private var showCamera = false
     @State private var selectedImage: UIImage?
-    @State var imageCamera: UIImage?
     
     @Binding var showModal: Bool
     @State private var model: String = ""
@@ -31,7 +31,7 @@ struct ShowInputPopUp: View {
     @FocusState private var detailFieldIsFocused: Bool
     @State private var brand: String = ""
     @FocusState private var brandFieldIsFocused: Bool
-    @State private var photo: Date? = nil
+    @State private var photo: Data? = nil
     @FocusState private var photoFieldIsFocused: Bool
     
     @Environment(\.modelContext) private var modelContext
@@ -114,7 +114,7 @@ struct ShowInputPopUp: View {
             .textFieldStyle(.roundedBorder)
             .background(Color.white)
             Spacer()
-            PhotosPicker("Galeria", selection: $selectedItem, matching: .images)
+            PhotosPicker("Inserir imagen", selection: $selectedItem, matching: .images)
                             .onChange(of: selectedItem) {
                                 Task {
                                     if let image = try? await selectedItem?.loadTransferable(type: Image.self) {
@@ -130,28 +130,16 @@ struct ShowInputPopUp: View {
                                 .scaledToFit()
                         }
             
-            VStack {
-                       if let selectedImage{
-                           Image(uiImage: selectedImage)
-                               .resizable()
-                               .scaledToFit()
-                       }
-                      
-                       Button("Camera") {
-                           self.showCamera.toggle()
-                       }
-                       .fullScreenCover(isPresented: self.$showCamera) {
-                           accessCameraView(selectedImage: self.$selectedImage)
-                               .background(.black)
-                       }
-                   }
-                    
+        
             HStack{
                 
                 
                 Button(action: {
                     Task{
-                        await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand, picture: image)
+                        if let imageDataVar = try? await selectedItem?.loadTransferable(type: Data.self) {
+                            self.imageData = imageDataVar
+                        }
+                        await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand, picture: imageData)
                     }
                 }){
                     HStack{
@@ -173,7 +161,7 @@ struct ShowInputPopUp: View {
         .background(Color.white)
     }
     
-    func addValue(model: String, price: Double, size: Int, descriptionDetail: String, brand: String, picture:Date?)async{
+    func addValue(model: String, price: Double, size: Int, descriptionDetail: String, brand: String, picture:Data?)async{
             print("Value add")
             withAnimation {
                 let newItem = Sneaker(model: model, price: price, size: size, descriptionDetail: descriptionDetail, photo: picture, brand: brand)
