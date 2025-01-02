@@ -24,29 +24,66 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        VStack{
+                        VStack(alignment: .leading){
                             Spacer()
                                 .frame(height: 15)
-                            Image(.teste)
-                                .resizable( resizingMode: .stretch)
-                                .frame( height: 250)
-                                .padding(20)
-                                .clipShape(.rect(cornerRadius: 20))
+                            if let imageView = item.photo {
+                                Image(uiImage: UIImage(data: imageView) ?? .teste)
+                                    .resizable( resizingMode: .stretch)
+                                    .frame( height: 250)
+                                    .padding(20)
+                                    .clipShape(.rect(cornerRadius: 20))
+                            }else{Image(.teste)
+                                    .resizable( resizingMode: .stretch)
+                                    .frame( height: 250)
+                                    .padding(20)
+                                    .clipShape(.rect(cornerRadius: 20))}
+                            
                             Spacer()
                                 .frame(height: 15)
                             HStack{
+                                Text("Modelo: ")
+                                    .fontWeight(.bold)
+                                    .padding([.leading],20)
+                                Text(String(item.model))
+                            }
+                            Spacer()
+                                .frame(height: 15)
+                            HStack{
+                                Text("Marca: ")
+                                    .fontWeight(.bold)
+                                    .padding([.leading],20)
+                                Text(String(item.brand))
+                            }
+                            Spacer()
+                                .frame(height: 15)
+                            HStack(){
+                                //Spacer(minLength: 10)
                                 Text("Detalhes: ")
                                     .fontWeight(.bold)
+                                    .padding([.leading],20)
                                 Text(item.descriptionDetail)
                             }
+                        
                             Spacer()
                                 .frame(height: 15)
                             HStack{
                                 Text("Tamanho: ")
                                     .fontWeight(.bold)
+                                    .padding([.leading],20)
                                 Text(String(item.size))
                             }
                             Spacer()
+                                .frame(height: 15)
+                            HStack{
+                                Text("Preço: ")
+                                    .fontWeight(.bold)
+                                    .padding([.leading],20)
+                                Text(String(item.price))
+                            }
+                            Spacer()
+                            
+                            
                             
                         }
                         

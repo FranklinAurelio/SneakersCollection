@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		165989112CB9A7D2008BED98 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165989102CB9A7D2008BED98 /* CameraView.swift */; };
 		16823E342C6BEC05003D5A5F /* Modal_insert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16823E332C6BEC05003D5A5F /* Modal_insert.swift */; };
 		16C5EFC22C25C353004E72BB /* snk_collectionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C5EFC12C25C353004E72BB /* snk_collectionApp.swift */; };
 		16C5EFC42C25C353004E72BB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C5EFC32C25C353004E72BB /* ContentView.swift */; };
@@ -40,7 +39,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		165989102CB9A7D2008BED98 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		16823E332C6BEC05003D5A5F /* Modal_insert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal_insert.swift; sourceTree = "<group>"; };
 		16C5EFBE2C25C353004E72BB /* snk_collection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snk_collection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16C5EFC12C25C353004E72BB /* snk_collectionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = snk_collectionApp.swift; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 		16C5EFF32C25FDC5004E72BB /* widgets */ = {
 			isa = PBXGroup;
 			children = (
-				165989102CB9A7D2008BED98 /* CameraView.swift */,
 				16C5EFF42C25FE6A004E72BB /* GridCell.swift */,
 				16823E332C6BEC05003D5A5F /* Modal_insert.swift */,
 			);
@@ -233,7 +230,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					16C5EFBD2C25C353004E72BB = {
 						CreatedOnToolsVersion = 15.4;
@@ -306,7 +303,6 @@
 				16C5EFC62C25C353004E72BB /* Item.swift in Sources */,
 				16C5EFC22C25C353004E72BB /* snk_collectionApp.swift in Sources */,
 				16C5EFF52C25FE6A004E72BB /* GridCell.swift in Sources */,
-				165989112CB9A7D2008BED98 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,7 +521,6 @@
 		16C5EFE82C25C356004E72BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -545,7 +540,6 @@
 		16C5EFE92C25C356004E72BB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -565,7 +559,6 @@
 		16C5EFEB2C25C356004E72BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6NLKWTB739;
@@ -583,7 +576,6 @@
 		16C5EFEC2C25C356004E72BB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6NLKWTB739;
