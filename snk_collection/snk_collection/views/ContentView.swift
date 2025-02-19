@@ -11,6 +11,7 @@ import Foundation
 
 
 struct ContentView: View {
+    
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Sneaker]
     init() {
@@ -29,7 +30,8 @@ struct ContentView: View {
                                 .frame(height: 15)
                             if let imageView = item.photo {
                                 Image(uiImage: UIImage(data: imageView) ?? .teste)
-                                    .resizable( resizingMode: .stretch)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
                                     .frame( height: 250)
                                     .padding(20)
                                     .clipShape(.rect(cornerRadius: 20))
@@ -95,11 +97,13 @@ struct ContentView: View {
                             
                         /*Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))*/
                     }
+                    
                 }
                 
                 .onDelete(perform: deleteItems)
                 .listRowBackground(Color.white)
                 .listRowSpacing(10)
+                
             }
          
             .toolbar {
@@ -117,6 +121,7 @@ struct ContentView: View {
                     }
                 }
             }
+            .background(Color.white)
             .sheet(isPresented: $showingPopUp, content: {
                 ShowInputPopUp(showModal: self.$showingPopUp)
             })
@@ -127,6 +132,7 @@ struct ContentView: View {
         .accentColor(.black)
      
     }
+    
         
 
     private func addItem() {
@@ -141,6 +147,7 @@ struct ContentView: View {
         }
     }
 }
+    
 
 #Preview {
     ContentView()
