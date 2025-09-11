@@ -12,7 +12,7 @@ import SwiftData
 struct snk_collectionApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Sneaker.self,
+            ItemModel.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

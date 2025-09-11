@@ -6,11 +6,9 @@
 //
 
 import Foundation
-
 import SwiftUI
 import Combine
 import PhotosUI
-
 
 struct ShowInputPopUp: View {
     @State private var selectedItem: PhotosPickerItem?
@@ -35,138 +33,124 @@ struct ShowInputPopUp: View {
     @FocusState private var photoFieldIsFocused: Bool
     
     @Environment(\.modelContext) private var modelContext
-    //let numberFormatter: NumberFormatter
-    //let mask:Mask?
-    
-    
     
     var body: some View {
-        VStack(alignment: .center , spacing: 30
-        ){
+        VStack(alignment: .center, spacing: 30) {
             Spacer()
             Text("Adicionar nova entrada")
-                .foregroundStyle(Color.black)
+                .foregroundStyle(Color.primary) // Alterado para a cor primária
             
             Spacer()
+            
             Form {
-                Section(header: Text("Modelo").foregroundStyle(Color.black)) {
-                        TextField(
-                            
-                            "Modelo",
-                            text: $model
-                        )
-                        .focused($modelFieldIsFocused)
-                        .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .foregroundStyle(Color.black)
-                        .keyboardType(.default)
-                    }
-                Section(header: Text("Preço").foregroundStyle(Color.black)) {
+                Section(header: Text("Modelo").foregroundStyle(Color.primary)) { // Alterado para a cor primária
+                    TextField(
+                        "Modelo",
+                        text: $model
+                    )
+                    .focused($modelFieldIsFocused)
+                    // Removido o .border(Color.black), pois Form já tem um estilo padrão
+                    // que se adapta.
+                    .textFieldStyle(.roundedBorder)
+                    .keyboardType(.default)
+                }
+                
+                Section(header: Text("Preço").foregroundStyle(Color.primary)) { // Alterado para a cor primária
                     TextField(
                         "preço",
                         value: $price, formatter: NumberFormatter()
                     )
-                    
                     .focused($priceFieldIsFocused)
-                    .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .foregroundStyle(Color.black)
+                    // Removido o .border(Color.black)
+                    .textFieldStyle(.roundedBorder)
                     .keyboardType(.numberPad)
                 }
-                Section(header: Text("Tamanho").foregroundStyle(Color.black)) {
+                
+                Section(header: Text("Tamanho").foregroundStyle(Color.primary)) { // Alterado para a cor primária
                     TextField(
                         "Tamanho",
                         value: $size, formatter: NumberFormatter()
                     )
-                    
                     .focused($sizeFieldIsFocused)
-                    .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .foregroundStyle(Color.black)
+                    // Removido o .border(Color.black)
+                    .textFieldStyle(.roundedBorder)
                     .keyboardType(.numberPad)
                 }
-                Section(header: Text("Detalhe").foregroundStyle(Color.black)) {
+                
+                Section(header: Text("Detalhe").foregroundStyle(Color.primary)) { // Alterado para a cor primária
                     TextField(
-                        
                         "Detalhe",
                         text: $detail
                     )
                     .focused($detailFieldIsFocused)
-                    .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .foregroundStyle(Color.black)
+                    // Removido o .border(Color.black)
+                    .textFieldStyle(.roundedBorder)
                     .keyboardType(.default)
                 }
-                Section(header: Text("Marca").foregroundStyle(Color.black)) {
+                
+                Section(header: Text("Marca").foregroundStyle(Color.primary)) { // Alterado para a cor primária
                     TextField(
-                        
                         "Marca",
                         text: $brand
                     )
                     .focused($brandFieldIsFocused)
-                    .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .foregroundStyle(Color.black)
+                    // Removido o .border(Color.black)
+                    .textFieldStyle(.roundedBorder)
                     .keyboardType(.default)
                 }
             }
             .scrollContentBackground(.hidden)
-            .textFieldStyle(.roundedBorder)
-            .background(Color.white)
-            Spacer()
-            PhotosPicker("Inserir imagen", selection: $selectedItem, matching: .images)
-                            .onChange(of: selectedItem) {
-                                Task {
-                                    if let image = try? await selectedItem?.loadTransferable(type: Image.self) {
-                                        self.image = image
-                                    }
-                                    print("Failed to load the image")
-                                }
-                            }
-                        
-                        if let image {
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        }
+            // Removido o .textFieldStyle(.roundedBorder) daqui, pois já está nos TextFields.
+            .background(Color(.systemBackground)) // Alterado para uma cor de fundo adaptável
             
-        
-            HStack{
-                
-                
-                Button(action: {
-                    Task{
-                        if let imageDataVar = try? await selectedItem?.loadTransferable(type: Data.self) {
-                            self.imageData = imageDataVar
+            Spacer()
+            
+            PhotosPicker("Inserir imagen", selection: $selectedItem, matching: .images)
+                .onChange(of: selectedItem) {
+                    Task {
+                        if let transferrable = try? await selectedItem?.loadTransferable(type: Data.self) {
+                            if let uiImage = UIImage(data: transferrable) {
+                                self.image = Image(uiImage: uiImage)
+                                self.imageData = transferrable
+                            }
                         }
+                    }
+                }
+            
+            if let image {
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 150) // Adicionando uma altura fixa para a imagem
+            }
+            
+            HStack {
+                Button(action: {
+                    Task {
                         await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand, picture: imageData)
                     }
-                }){
-                    HStack{
+                }) {
+                    HStack {
                         Text("Adicionar")
                         Image(systemName: "plus.circle")
                     }
-                    
                 }
                 .padding()
-                .background(Color.black)
+                .background(Color.accentColor) // Usando a cor de acento do sistema
                 .clipShape(Capsule())
-                .foregroundStyle(Color.white)
+                .foregroundStyle(Color(.secondarySystemBackground)) // Alterado para uma cor de texto adaptável
             }
-            
-            //.shadow(color: Color(red: 0, green: 0.5, blue: 0.5), radius: 7)
+            .padding(.horizontal, 20)
         }
-        .preferredColorScheme(.light)
-        .textFieldStyle(.roundedBorder)
-        .background(Color.white)
+        // Removido `.preferredColorScheme(.light)`
+        // Removido o `.background(Color.white)` redundante
     }
     
-    func addValue(model: String, price: Double, size: Int, descriptionDetail: String, brand: String, picture:Data?)async{
-            print("Value add")
-            withAnimation {
-                let newItem = Sneaker(model: model, price: price, size: size, descriptionDetail: descriptionDetail, photo: picture, brand: brand)
-                modelContext.insert(newItem)
-            }
-            self.showModal.toggle()
+    func addValue(model: String, price: Double, size: Int, descriptionDetail: String, brand: String, picture: Data?) async {
+        withAnimation {
+            let newItem = ItemModel(model: model, price: price, size: size, descriptionDetail: descriptionDetail, photo: picture, brand: brand)
+            modelContext.insert(newItem)
         }
+        self.showModal.toggle()
+    }
 }

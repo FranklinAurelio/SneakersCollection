@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-@Model class Sneaker{
+@Model class ItemModel{
     @Attribute(.unique) var model: String
     var price: Double
     var size: Int
