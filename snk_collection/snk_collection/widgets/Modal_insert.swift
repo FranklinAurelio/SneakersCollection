@@ -18,6 +18,8 @@ struct ShowInputPopUp: View {
     @State private var showCamera = false
     @State private var selectedImage: UIImage?
     
+    @State private var selectedCategory: String?
+    
     @Binding var showModal: Bool
     @State private var model: String = ""
     @FocusState private var modelFieldIsFocused: Bool
@@ -31,18 +33,35 @@ struct ShowInputPopUp: View {
     @FocusState private var brandFieldIsFocused: Bool
     @State private var photo: Data? = nil
     @FocusState private var photoFieldIsFocused: Bool
+    @State private var category: String = ""
+    @FocusState private var modelCategoryIsFocused: Bool
     
     @Environment(\.modelContext) private var modelContext
+    
+    let categories: [String] = ["SNKRS", "Quadrinhos", "Actions", "Funkos"]
     
     var body: some View {
         VStack(alignment: .center, spacing: 30) {
             Spacer()
-            Text("Adicionar nova entrada")
+            Text("Adicionar novo item")
                 .foregroundStyle(Color.primary) // Alterado para a cor primária
             
             Spacer()
             
             Form {
+                Section(header: Text("Categoria").foregroundStyle(Color.primary)) { // Alterado para a cor primária
+                    Picker("Selecione a categoria", selection: $selectedCategory) {
+                                        // Opção inicial, sem seleção
+                                        Text("Nenhuma").tag(nil as String?)
+
+                                        // Loop que cria um item para cada string na lista
+                                        ForEach(categories, id: \.self) { category in
+                                            Text(category).tag(category as String?)
+                                        }
+                                    }
+                                    .pickerStyle(.menu)
+                }
+                
                 Section(header: Text("Modelo").foregroundStyle(Color.primary)) { // Alterado para a cor primária
                     TextField(
                         "Modelo",
@@ -127,7 +146,7 @@ struct ShowInputPopUp: View {
             HStack {
                 Button(action: {
                     Task {
-                        await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand, picture: imageData)
+                        await addValue(model: model, price: price, size: size, descriptionDetail: detail, brand: brand, picture: imageData, category: selectedCategory!)
                     }
                 }) {
                     HStack {
@@ -146,9 +165,9 @@ struct ShowInputPopUp: View {
         // Removido o `.background(Color.white)` redundante
     }
     
-    func addValue(model: String, price: Double, size: Int, descriptionDetail: String, brand: String, picture: Data?) async {
+    func addValue(model: String, price: Double, size: Int, descriptionDetail: String, brand: String, picture: Data?, category: String) async {
         withAnimation {
-            let newItem = ItemModel(model: model, price: price, size: size, descriptionDetail: descriptionDetail, photo: picture, brand: brand)
+            let newItem = ItemModel(model: model, price: price, size: size, descriptionDetail: descriptionDetail, photo: picture, brand: brand, category: category)
             modelContext.insert(newItem)
         }
         self.showModal.toggle()

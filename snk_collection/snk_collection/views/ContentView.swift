@@ -5,79 +5,100 @@
 //  Created by Franklin Carvalho on 21/06/24.
 //
 
+
 import SwiftUI
 import SwiftData
 import Foundation
 
 struct ContentView: View {
-    
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [ItemModel]
     
-    // Remova a linha 'UITableView.appearance().backgroundColor = .red'
-    // A melhor prática em SwiftUI é evitar manipular UIKit 'appearance'
-    // diretamente, pois isso pode causar comportamento inesperado.
-    
     @State private var showingPopUp = false
-
+    
+    private var groupedItems: [String: [ItemModel]] {
+        Dictionary(grouping: items) { item in
+            // IMPORTANTE: Assumimos que 'ItemModel' tem uma propriedade 'category: String'
+            return item.category
+        }
+    }
+    
     var body: some View {
         NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        VStack(alignment: .leading) {
-                            Spacer()
-                                .frame(height: 15)
-                            
-                            // Use uma View adaptável para a imagem em vez de lógica dentro da view
-                            ItemDetailView(item: item)
-
-                            Spacer()
-                                .frame(height: 15)
-                            
-                            // Use 'Color.primary' para o texto
-                            TextDetailsView(item: item)
+            if groupedItems.isEmpty {
+                ContentUnavailableView("Adicione seu primeiro item",
+                                       systemImage: "list.clipboard")
+                .toolbar {
+                    // O EditButton foi removido, pois não é compatível com DisclosureGroup
+                    ToolbarItem {
+                        Button(action: addItem) {
+                            Label("Add Item", systemImage: "plus.app.fill")
                         }
-                        .background(Color(.systemBackground)) // Garante que o fundo da página de detalhe se adapta
-                    } label: {
-                        GridCell(itemPassed: item)
-                            .background(Color(.secondarySystemBackground)) // Use uma cor de fundo adaptável para as células da lista
                     }
                 }
-                .onDelete(perform: deleteItems)
-                // Remova .listRowBackground(Color.white) e .listRowSpacing(10)
-                // A cor de fundo padrão da lista já se adapta.
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus.app.fill")
+                .sheet(isPresented: $showingPopUp, content: {
+                    ShowInputPopUp(showModal: self.$showingPopUp)
+                })
+            } else {
+                List {
+                    // Itera sobre as chaves e valores do dicionário
+                    ForEach(groupedItems.keys.sorted(), id: \.self) { category in
+                        
+                        // Substituímos o Section por um DisclosureGroup
+                        DisclosureGroup(category) {
+                        
+                            ForEach(groupedItems[category]!, id: \.self) { item in
+                                NavigationLink {
+                                    VStack(alignment: .leading) {
+                                        Spacer().frame(height: 15)
+                                        ItemDetailView(item: item)
+                                        Spacer().frame(height: 15)
+                                        TextDetailsView(item: item)
+                                    }
+                                    .background(Color(.systemBackground))
+                                } label: {
+                                    GridCell(itemPassed: item)
+                                        .background(Color(.secondarySystemBackground))
+                                }
+                                // Adiciona um menu de contexto para a exclusão
+                                .contextMenu {
+                                    Button(role: .destructive) {
+                                        deleteItem(item)
+                                    } label: {
+                                        Label("Excluir", systemImage: "trash")
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+                .toolbar {
+                    // O EditButton foi removido, pois não é compatível com DisclosureGroup
+                    ToolbarItem {
+                        Button(action: addItem) {
+                            Label("Add Item", systemImage: "plus.app.fill")
+                        }
+                    }
+                }
+                .sheet(isPresented: $showingPopUp, content: {
+                    ShowInputPopUp(showModal: self.$showingPopUp)
+                })
             }
-            // Remova .background(Color.white)
-            // O fundo da NavigationSplitView já se adapta.
-            .sheet(isPresented: $showingPopUp, content: {
-                ShowInputPopUp(showModal: self.$showingPopUp)
-            })
+            
         } detail: {
             Text("Select an item")
         }
-        .accentColor(.primary) // Use .primary ou a cor da sua marca para o acento
+        .accentColor(.primary)
     }
-
+    
     private func addItem() {
         showingPopUp.toggle()
     }
-
-    private func deleteItems(offsets: IndexSet) {
+    
+    // Função de exclusão simplificada, já que o contextMenu passa o item
+    private func deleteItem(_ item: ItemModel) {
         withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
+            modelContext.delete(item)
         }
     }
 }
