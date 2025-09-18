@@ -10,30 +10,33 @@ import SwiftUI
 
 struct SplashView: View {
     @State var isActive: Bool = false
-    @State private var size = 0.8
-    @State private var opacity = 0.5
+    @State private var size = 0.5
+    @State private var opacity = 0.0
     
     var body: some View {
         if self.isActive {
             ContentView()
         } else {
-            ZStack {
+            VStack {
                 // A imagem da splash screen em tela cheia
                 Image("splashImage")
-                    .resizable(resizingMode: .stretch)
+                    .resizable()
                     .scaledToFill()
-                    .edgesIgnoringSafeArea(.all) // <--- Esta linha faz a imagem ser full screen
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea(.all) // Usando o modificador moderno
                     .scaleEffect(size)
                     .opacity(opacity)
                     .onAppear {
-                        withAnimation(.easeIn(duration: 1.2)) {
+                        // Animação 1: Zoom e fade in suaves
+                        withAnimation(.easeIn(duration: 1.5)) {
                             self.size = 1.0
                             self.opacity = 1.0
                         }
                     }
             }
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                // Animação 2: Transição após um pequeno atraso
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                     withAnimation(.easeOut(duration: 0.5)) {
                         self.isActive = true
                     }
@@ -43,8 +46,8 @@ struct SplashView: View {
     }
 }
 
-struct SplashView_Previews: PreviewProvider{
-    static var previews: some View{
+struct SplashView_Previews: PreviewProvider {
+    static var previews: some View {
         SplashView()
     }
 }
